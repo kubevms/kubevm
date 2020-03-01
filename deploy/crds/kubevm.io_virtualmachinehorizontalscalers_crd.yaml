@@ -1,0 +1,114 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: virtualmachinehorizontalscalers.kubevm.io
+spec:
+  group: kubevm.io
+  names:
+    kind: VirtualMachineHorizontalScaler
+    listKind: VirtualMachineHorizontalScalerList
+    plural: virtualmachinehorizontalscalers
+    singular: virtualmachinehorizontalscaler
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: VirtualMachineHorizontalScaler is the Schema for the virtualmachinehorizontalscalers
+        API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualMachineHorizontalScalerSpec defines the desired state
+            of VirtualMachineHorizontalScaler
+          properties:
+            maxReplicas:
+              format: int32
+              minimum: 1
+              type: integer
+            metrics:
+              items:
+                properties:
+                  resource:
+                    properties:
+                      name:
+                        enum:
+                        - cpu
+                        type: string
+                      target:
+                        properties:
+                          averageUtilization:
+                            format: int32
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          type:
+                            enum:
+                            - Utilization
+                            type: string
+                        required:
+                        - averageUtilization
+                        - type
+                        type: object
+                    required:
+                    - name
+                    - target
+                    type: object
+                  type:
+                    enum:
+                    - Resource
+                    type: string
+                required:
+                - resource
+                - type
+                type: object
+              minItems: 1
+              type: array
+            minReplicas:
+              format: int32
+              minimum: 1
+              type: integer
+            scaleTargetRef:
+              properties:
+                apiVersion:
+                  enum:
+                  - kubevm.io/v1alpha1
+                  type: string
+                kind:
+                  enum:
+                  - VirtualMachineDeployment
+                  type: string
+                name:
+                  type: string
+              required:
+              - apiVersion
+              - kind
+              - name
+              type: object
+          required:
+          - maxReplicas
+          - metrics
+          - minReplicas
+          - scaleTargetRef
+          type: object
+        status:
+          description: VirtualMachineHorizontalScalerStatus defines the observed state
+            of VirtualMachineHorizontalScaler
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true

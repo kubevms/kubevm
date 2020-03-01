@@ -1,0 +1,8 @@
+apiVersion: kubevm.io/v1alpha1
+kind: VirtualMachineInstance
+metadata:
+  name: example-virtualmachineinstance
+spec:
+  image: cirros-0.4.0
+  network: subscriber-01
+  status: Started

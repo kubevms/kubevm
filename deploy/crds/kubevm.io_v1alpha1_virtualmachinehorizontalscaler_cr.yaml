@@ -1,0 +1,19 @@
+apiVersion: kubevm.io/v1alpha1
+kind: VirtualMachineHorizontalScaler
+metadata:
+  name: example-virtualmachinehorizontalscaler
+spec:
+spec:
+  scaleTargetRef:
+    apiVersion: kubevm.io/v1alpha1
+    kind: VirtualMachineDeployment
+    name: example-virtualmachinedeployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
