@@ -51,14 +51,9 @@ spec:
                 secretKeyRef:
                   name: kubevm
                   key: OS_PROJECT_NAME
-            - name: OS_USER_DOMAIN_NAME
+            - name: OS_DOMAIN_NAME
               valueFrom:
                 secretKeyRef:
                   name: kubevm
-                  key: OS_USER_DOMAIN_NAME
-            - name: OS_PROJECT_DOMAIN_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: kubevm
-                  key: OS_PROJECT_DOMAIN_NAME
+                  key: OS_DOMAIN_NAME
 
