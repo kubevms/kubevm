@@ -42,12 +42,9 @@ func Add(mgr manager.Manager) error {
 
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) (reconcile.Reconciler, error) {
-	opts := gophercloud.AuthOptions{
-		IdentityEndpoint: "http://192.168.50.14:5000/v3",
-		Username:         "subscriber-01",
-		Password:         "subscriber-01",
-		DomainID:         "default",
-		TenantName:       "subscriber-01",
+	opts, err := openstack.AuthOptionsFromEnv()
+	if err != nil {
+		return nil, err
 	}
 
 	provider, err := openstack.AuthenticatedClient(opts)
